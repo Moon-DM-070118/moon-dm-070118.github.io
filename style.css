@@ -1,0 +1,235 @@
+/* 全局样式 - 异想纪元官网 */
+:root {
+    --bg-dark: #0a0c0f;
+    --bg-card: #151a1f;
+    --text-light: #e0e4e8;
+    --text-dim: #a0a8b0;
+    --accent-cyan: #3ecfcf;
+    --accent-purple: #9b4dff;
+    --accent-red: #ff4d6d;
+    --border-glow: 0 0 10px rgba(62, 207, 207, 0.3);
+    --font-main: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    line-height: 1.6;
+    background-image: radial-gradient(circle at 10% 20%, rgba(62, 207, 207, 0.05) 0%, transparent 30%),
+                      radial-gradient(circle at 90% 80%, rgba(155, 77, 255, 0.05) 0%, transparent 30%);
+    min-height: 100vh;
+}
+
+a {
+    color: var(--accent-cyan);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+a:hover {
+    color: var(--accent-purple);
+}
+
+/* 导航栏 */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 5%;
+    border-bottom: 1px solid rgba(62, 207, 207, 0.2);
+    background: rgba(10, 12, 15, 0.95);
+    backdrop-filter: blur(5px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+.logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+.logo span {
+    font-size: 1rem;
+    color: var(--text-dim);
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+}
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+.nav-links a {
+    color: var(--text-light);
+    font-weight: 500;
+    position: relative;
+}
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent-cyan);
+    transition: width 0.2s;
+}
+.nav-links a:hover::after,
+.nav-links a.active::after {
+    width: 100%;
+}
+.nav-links a.active {
+    color: var(--accent-cyan);
+}
+
+/* 主容器 */
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 5%;
+}
+
+/* 卡片通用样式 */
+.card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 2rem;
+    border: 1px solid rgba(62, 207, 207, 0.2);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    transition: transform 0.2s, border-color 0.2s;
+}
+.card:hover {
+    border-color: var(--accent-cyan);
+    box-shadow: var(--border-glow);
+}
+
+/* 标题 */
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #fff, var(--accent-cyan));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--accent-cyan);
+    border-left: 4px solid var(--accent-purple);
+    padding-left: 1rem;
+}
+h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-light);
+}
+
+/* 按钮 */
+.btn {
+    display: inline-block;
+    background: transparent;
+    border: 1px solid var(--accent-cyan);
+    color: var(--accent-cyan);
+    padding: 0.8rem 2rem;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+.btn:hover {
+    background: var(--accent-cyan);
+    color: var(--bg-dark);
+    box-shadow: 0 0 15px var(--accent-cyan);
+}
+
+/* 进度条（开发进度用） */
+.progress-bar {
+    background: #2a2f35;
+    height: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0.5rem 0;
+}
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+    width: 0%;
+    border-radius: 10px;
+}
+
+/* 角色网格 */
+.char-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+.char-card {
+    text-align: center;
+    background: var(--bg-card);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid rgba(155, 77, 255, 0.3);
+    transition: all 0.2s;
+}
+.char-card:hover {
+    border-color: var(--accent-cyan);
+    transform: translateY(-5px);
+}
+.char-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    background: linear-gradient(135deg, #2a3a4a, #1a2a3a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: var(--accent-cyan);
+    border: 2px solid var(--accent-purple);
+}
+.char-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent-cyan);
+}
+.char-desc {
+    color: var(--text-dim);
+    margin-top: 0.5rem;
+}
+
+/* 页脚 */
+.footer {
+    margin-top: 4rem;
+    text-align: center;
+    padding: 2rem;
+    border-top: 1px solid rgba(62, 207, 207, 0.2);
+    color: var(--text-dim);
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .nav-links {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    h1 {
+        font-size: 2rem;
+    }
+}
