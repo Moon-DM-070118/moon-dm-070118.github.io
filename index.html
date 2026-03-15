@@ -134,7 +134,7 @@
         drawParticles();
 
         // 加载动画消失
-        window.addEventListener('load', function() {
+        document.addEventListener('DOMContentLoaded', function() {
             const loading = document.getElementById('loading');
             setTimeout(() => {
                 loading.classList.add('fade-out');
