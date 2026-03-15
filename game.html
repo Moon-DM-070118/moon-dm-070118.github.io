@@ -3,12 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>游戏介绍 · 异想纪元</title>
+    <title>游戏介绍 · 异想纪元 · 熵寂录</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="page-game">
+    <div id="loading">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <div class="loading-text">100% Updating...</div>
+        </div>
+    </div>
+    <canvas id="bg-canvas"></canvas>
+
     <nav class="navbar">
-        <div class="logo">异想纪元<span> • ︎熵寂录</span></div>
+        <div class="logo">异想纪元<span> · 熵寂录</span></div>
         <div class="nav-links">
             <a href="index.html">首页</a>
             <a href="game.html" class="active">游戏介绍</a>
@@ -19,54 +28,112 @@
     </nav>
 
     <main class="container">
-        <h1>游戏介绍</h1>
+        <h1 data-aos="fade-up">游戏介绍</h1>
 
-        <section>
-            <h2>世界观</h2>
+        <section data-aos="fade-up" data-aos-delay="100">
+            <h2>世界观概览</h2>
             <div class="card">
-                <p><strong>光纪元 · 旧公元3206年</strong> — 『茧』降临，异想粒子开始侵蚀一切具有神经结构的生命。人类文明在几百年内濒临灭绝，世界进入『夜纪元』。</p>
-                <p><strong>夜纪元42年</strong> — 『茧』破壳，异想粒子浓度暴增，第一批异想者诞生。人类逐渐开发出利用异想的技术，在『神』的棋局中，以凡人之躯开始漫长的博弈。</p>
-                <p>你将扮演领航者，见证并探寻异想之下的故事，面对一切可能的挑战。</p>
+                <p><strong>异想——</strong></p>
+                    <p>异想是基于“茧”散发的粒子，能够入侵一切和“思想”，“神经”相关的结构，并以该结构本身的趋势，进行熵增型演化，此过程称为“侵蚀”，比如人类的思想被侵蚀后，若该人类不能以极强的意志对抗，则会堕落为行尸，这种情况同样适用于高智力动物，少数植物</p>
+                <p><strong>侵蚀——</strong></p>
+                    <p>侵蚀分为不同程度，量化单位为“紊乱度”，低紊乱度仅会对人类造成部分外观的演化，这与人类遭受侵蚀时的“思想”相关，基于此，会出现许多诸如“兽耳”，“角”之类的外表特征。中紊乱度在侵蚀理智的情况下，也会变相地提升受侵蚀者的身体能力，使其拥有更强的战斗力，其与“紊乱度”高低，人类意志强弱，侵蚀时长相关联</p>
+                <p><strong>异想者——</strong></p>
+                    <p>异想可以攫取“概念”，以受侵蚀者的“最强欲望”，使其成为“异想者”，异想者通常拥有单个概念的权能，但概念拥有未知的限制，这使得异想者能力强大，可以摧毁城市甚至大陆，异想者分为“羽化”“非羽化”，非羽化的异想者会遵从“概念”的混沌面，造成毁灭，“羽化”的异想者可以保持一定理智，且能够为人类而战，是否羽化通常取决于异想者受到侵蚀时对于“概念”的理解和对抗力，这和其“意志”相关</p>
+                <p><strong>伊西亚斯——</strong></p>
+                    <p>进入夜纪元后，人类最终组成了当下世界上最强大和统一的武装力量，以研究、反抗异想为目标持续努力着</p>
             </div>
         </section>
 
-        <section style="margin-top: 2rem;">
+        <section style="margin-top: 2rem;" data-aos="fade-up" data-aos-delay="200">
             <h2>战斗机制</h2>
             <div class="card">
                 <ul style="list-style: none;">
-                    <li style="margin-bottom: 1rem;"><strong>⚡熵值</strong> — 战斗中的风险累积，过高会导致负面效果，但也许可以主动利用。</li>
-                    <li style="margin-bottom: 1rem;"><strong>🔋储能</strong> — 释放技能的能量，自然回复或通过技能插件回复。</li>
-                    <li style="margin-bottom: 1rem;"><strong>⚖️失衡</strong> — 累积怪物失衡值，满值时触发失衡，大幅削弱敌方。</li>
-                    <li style="margin-bottom: 1rem;"><strong>🛡️招架</strong> — 在怪物靠近攻击时下蹲进入招架，免疫伤害并反击，同时降低熵值、回复储能、累积失衡。</li>
+                    <li style="margin-bottom: 1rem;"><strong>⚡熵值</strong> — 战斗中的风险累积，过高会导致负面效果，但也许可以主动利用换取爆发。</li>
+                    <li style="margin-bottom: 1rem;"><strong>🔋储能</strong> — 释放技能的能量，通过攻击、闪避、技能插件回复。</li>
+                    <li style="margin-bottom: 1rem;"><strong>⚖️失衡</strong> — 累积怪物失衡值，满值时触发失衡，创造输出区间。</li>
+                    <li style="margin-bottom: 1rem;"><strong>🛡️招架</strong> — 在敌人重击前摇下蹲招架，免疫伤害并反击，同时降低熵值、累积敌人失衡。</li>
                 </ul>
             </div>
         </section>
 
         <section style="margin-top: 2rem;">
-            <h2>特色系统</h2>
+            <h2 data-aos="fade-up">特色系统</h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
-                <div class="card">
+                <div class="card" data-aos="fade-up" data-aos-delay="0">
                     <h3>🧬 装备套装</h3>
-                    <p>不同套装提供不同基础属性，搭配快捷栏物品激活强力技能插件。</p>
+                    <p>极不同套装提供不同基础属性，搭配快捷栏插件激活强力技能。</p>
                 </div>
-                <div class="card">
+                <div class="card" data-aos="fade-up" data-aos-delay="100">
                     <h3>🔮 技能插件</h3>
-                    <p>通过快捷栏放置特定物品触发，与熵值、储能、失衡、招架深度联动，构筑你的专属流派。</p>
+                    <p>通过快捷栏放置特定物品触发，与熵值、储能、失衡、招架深度联动，构筑你的专属战斗方式。</p>
                 </div>
-                <div class="card">
+                <div class="card" data-aos="fade-up" data-aos-delay="200">
                     <h3>🗺️ 箱庭式地图</h3>
-                    <p>探索废墟都市、雪原森林、深潜海渊等区域，发现隐藏剧情与矿物。</p>
+                    <p>探索TEOH-3众多区域，寻找资源与丰富矿产。</p>
                 </div>
-                <div class="card">
+                <div class="card" data-aos="fade-up" data-aos-delay="300">
                     <h3>⚙️ 抽卡 & 养成</h3>
-                    <p>获取技能武装、数据，铎币，强化自身；参与活动与挑战获取大量资源。</p>
+                    <p>消耗数据获取技能武装，强化插件；参与挑战获取周期资源。</p>
                 </div>
             </div>
         </section>
     </main>
 
     <footer class="footer">
-        <p>© 异想纪元 • ︎熵寂录 开发团队</p>
+        <p>© 异想纪元 · 熵寂录 开发团队</p>
     </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // 粒子动画（与首页相同，省略重复注释）
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function initParticles() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            const particleCount = 80;
+            particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    size: Math.random() * 3 + 1,
+                    speedX: (Math.random() - 0.5) * 0.5,
+                    speedY: (Math.random() - 0.5) * 0.5,
+                    color: `rgba(62, 207, 207, ${Math.random() * 0.3})`
+                });
+            }
+        }
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+                p.x += p.speedX;
+                p.y += p.speedY;
+                if (p.x < 0 || p.x > width) p.speedX *= -1;
+                if (p.y < 0 || p.y > height) p.speedY *= -1;
+            });
+            requestAnimationFrame(drawParticles);
+        }
+
+        window.addEventListener('resize', initParticles);
+        initParticles();
+        drawParticles();
+
+        window.addEventListener('load', function() {
+            document.getElementById('loading').classList.add('fade-out');
+        });
+
+        AOS.init({ duration: 800, once: true, offset: 0 });
+    </script>
 </body>
 </html>

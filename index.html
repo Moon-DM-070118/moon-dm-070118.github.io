@@ -3,14 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>异想纪元 ︎• ︎熵寂录</title>
+    <title>异想纪元 · 熵寂录</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="page-home">
+    <!-- 加载动画 -->
+    <div id="loading">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <div class="loading-text">100% Updating...</div>
+        </div>
+    </div>
+
+    <!-- 粒子背景画布 -->
+    <canvas id="bg-canvas"></canvas>
+
     <nav class="navbar">
-        <div class="logo">异想纪元<span> • ︎熵寂录</span></div>
+        <div class="logo">异想纪元<span> · 熵寂录</span></div>
         <div class="nav-links">
-            <a href="index.html" class="active">领航者首页</a>
+            <a href="index.html" class="active">首页</a>
             <a href="game.html">游戏介绍</a>
             <a href="characters.html">角色</a>
             <a href="progress.html">开发进度</a>
@@ -20,18 +32,18 @@
 
     <main class="container">
         <!-- 英雄区域 -->
-        <section style="text-align: center; margin: 4rem 0;">
-            <h1 style="font-size: 4rem; margin-bottom: 0.5rem;">异想纪元 • ︎熵寂录</h1>
-            <p style="font-size: 1.5rem; color: var(--text-dim);">欢迎走向通往未来的旅途</p>
+        <section style="text-align: center; margin: 4rem 0;" data-aos="fade-up">
+            <h1 style="font-size: 4rem; margin-bottom: 0.5rem;">异想纪元 ◆ 熵寂录</h1>
+            <p style="font-size: 1.5rem; color: var(--text-dim);">新时代MC剧情向RPG</p>
             <div style="margin: 2rem 0;">
                 <a href="game.html" class="btn">了解更多</a>
-                <a href="#" class="btn" style="margin-left: 1rem; border-color: var(--accent-purple); color: var(--accent-purple);">▷▷加入我们的讨论！☞</a>
+                <a href="#" class="btn" style="margin-left: 1rem; border-color: var(--accent-purple); color: var(--accent-purple);">加入QQ群</a>
             </div>
         </section>
 
         <!-- 世界观简介 -->
-        <section>
-            <h2>夜纪元 · 2026</h2>
+        <section data-aos="fade-up" data-aos-delay="100">
+            <h2>夜纪元 · 2076</h2>
             <div class="card">
                 <p style="font-size: 1.2rem;">光纪元[旧公元]三二零六年，自天外来物『茧』降临TEOH-3行星，人类开始被迫与名为『异想』的未知进行对抗。
 
@@ -46,17 +58,17 @@
 
         <!-- 特色快速预览 -->
         <section style="margin-top: 3rem;">
-            <h2>核心玩法</h2>
+            <h2 data-aos="fade-up">核心玩法</h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem;">
-                <div class="card">
-                    <h3>⚔️ 熵值·失衡·招架</h3>
-                    <p>独特的战斗机制，风险与回报并存，每一次防御都是反击的起点。</p>
+                <div class="card" data-aos="fade-up" data-aos-delay="0">
+                    <h3>⚔️ 熵值 · 失衡 · 弹刀</h3>
+                    <p>独特战斗机制，风险与回报并存，每一次防御都是反击的起点。</p>
                 </div>
-                <div class="card">
+                <div class="card" data-aos="fade-up" data-aos-delay="100">
                     <h3>🧩 装备套装 & 技能插件</h3>
-                    <p>自由搭配装备与插件，激活专属联动效果，打造你的战斗风格。</p>
+                    <p>搭配装备与插件，激活联动效果，打造你的战斗风格。</p>
                 </div>
-                <div class="card">
+                <div class="card" data-aos="fade-up" data-aos-delay="200">
                     <h3>📖 箱庭式剧情探索</h3>
                     <p>沉浸于TEOH-3的废墟与秘境，揭开异想与『茧』的真相。</p>
                 </div>
@@ -65,8 +77,76 @@
     </main>
 
     <footer class="footer">
-        <p>© 异想纪元 • ︎熵寂录 开发团队 | 基于Minecraft BE 构建</p>
-        <p style="margin-top: 0.5rem; font-size: 0.9rem;">「于此启程，向着群星」</p>
+        <p>© 异想纪元 · 熵寂录 开发团队 | 基于Minecraft BE 构建</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">「以此为启，向着未来」</p>
     </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // 粒子动画
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function initParticles() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+
+            const particleCount = 80;
+            particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    size: Math.random() * 3 + 1,
+                    speedX: (Math.random() - 0.5) * 0.5,
+                    speedY: (Math.random() - 0.5) * 0.5,
+                    color: `rgba(62, 207, 207, ${Math.random() * 0.3})`
+                });
+            }
+        }
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+
+                p.x += p.speedX;
+                p.y += p.speedY;
+
+                if (p.x < 0 || p.x > width) p.speedX *= -1;
+                if (p.y < 0 || p.y > height) p.speedY *= -1;
+            });
+            requestAnimationFrame(drawParticles);
+        }
+
+        window.addEventListener('resize', () => {
+            initParticles();
+        });
+
+        initParticles();
+        drawParticles();
+
+        // 加载动画消失
+        window.addEventListener('load', function() {
+            const loading = document.getElementById('loading');
+            setTimeout(() => {
+                loading.classList.add('fade-out');
+            }, 800);
+        });
+
+        // 初始化 AOS
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 0
+        });
+    </script>
 </body>
 </html>
