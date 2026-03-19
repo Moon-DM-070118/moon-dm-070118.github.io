@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>异想纪元 · 熵寂录</title>
+    <!-- AOS 动画库 -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-home">
+    <!-- 加载视频层 -->
+<div id="loadingVideo">
+    <!-- 视频背景 -->
+    <video id="introVideo" autoplay muted playsinline>
+        <source src="video/intro.mp4" type="video/mp4">
+    </video>
+
+    <!-- 左右垂直进度条（带跟随数字） -->
+    <div class="progress-left">
+        <div class="progress-fill-vertical" id="progressLeftFill">
+            <span class="progress-percent" id="percentLeft">0%</span>
+        </div>
+    </div>
+    <div class="progress-right">
+        <div class="progress-fill-vertical" id="progressRightFill">
+            <span class="progress-percent" id="percentRight">0%</span>
+        </div>
+    </div>
+
+    <div class="skip-btn" id="skipBtn">跳过</div>
+</div>
+
+    <!-- 粒子背景 -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="logo">异想纪元<span> · 熵寂录</span></div>
+        <!-- 汉堡菜单按钮（只在移动端显示） -->
+        <div class="menu-btn" id="menuBtn">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- 侧边栏 -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">『熵寂录』</div>
+            <div class="close-btn" id="closeBtn">&times;</div>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="#hero">首页</a></li>
+            <li><a href="#lore">世界观概览</a></li>
+            <li><a href="#gameplay">玩法介绍</a></li>
+            <li><a href="#characters">故事中人</a></li>
+            <li><a href="#progress">开发进度</a></li>
+            <li><a href="#community">社区</a></li>
+            <li><a href="#notice">公告</a></li>
+        </ul>
+    </div>
+
+    <!-- 遮罩层（移动端） -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- 主内容区（长滚动） -->
+    <main class="scroll-content">
+        <!-- 英雄区 -->
+        <section id="hero" class="section hero-section">
+            <h1 class="hero-title">▷异想纪元·熵寂录◁</h1>
+            <div class="hero-sub">
+                <span class="left">内部开发版本—V0.57</span>
+                <span class="right">𝓣𝓱𝓮 𝓐𝓰𝓮 𝓞𝓯 𝓕𝓪𝓷𝓽𝓪𝓼𝔂</span>
+            </div>
+            <div class="hero-btn">
+                <a href="#lore" class="btn">了解更多</a>
+            </div>
+            <div class="hero-footer">
+                <p>服务器号：74361349</p>
+                <p>QQ群：444197245</p>
+            </div>
+        </section>
+
+        <!-- 世界观（带左右切换卡片） -->
+        <section id="lore" class="section lore-section">
+            <!-- 标题区 -->
+            <div class="section-header">
+                <h2 class="main-title">世界观概览</h2>
+                <p class="sub-title">WORLD—VIEW <span class="arrow">↘</span></p>
+            </div>
+
+            <!-- 轮播内容区（只显示文字，无背景框） -->
+            <div class="lore-content-wrapper">
+                <div class="lore-text" id="loreText">
+                    <h3 id="loreTitle">异想</h3>
+                    <p id="loreDesc"></p>
+                </div>
+            </div>
+
+            <!-- 下方控制区：左右按钮 + 当前标题 -->
+            <div class="lore-controls">
+                <button class="lore-arrow left" id="prevCard">⇦</button>
+                <span class="current-title" id="currentLoreTitle">异想</span>
+                <button class="lore-arrow right" id="nextCard">⇨</button>
+            </div>
+        </section>
+
+        <!-- 玩法介绍（扩充内容） -->
+        <section id="gameplay" class="section gameplay-section">
+            <div class="section-header">
+                <h2 class="main-title">玩法介绍</h2>
+                <p class="sub-title">GAMEPLAY <span class="arrow">↘</span></p>
+            </div>
+
+            <!-- 详细说明文字 -->
+            <div class="gameplay-desc card" data-aos="fade-left">
+                <p>服务器PVE玩法围绕多个数据展开。能够制造装备套装/刷取技能插件自由搭配，可激活数多种联动效果。箱庭式地图中隐藏着大量剧情碎片与各种资源点，等待领航者探索。</p>
+            </div>
+
+            <!-- 三个核心特性卡片 -->
+            <div class="features-grid">
+                <div class="card" data-aos="fade-left" data-aos-delay="0">
+                    <h3>𝔽𝕀𝔾ℍ𝕋:熵值·失衡·招架</h3>
+                    <p>独特的战斗机制，风险与回报并存，需要独到的时机判断力以达成出伤</p>
+                </div>
+                <div class="card" data-aos="fade-left" data-aos-delay="100">
+                    <h3>𝔸𝔹𝕀𝕃𝕀𝕋𝕐：装备套装&技能</h3>
+                    <p>自由搭配装备与插件，激活联动能力buff，使用不同的战斗风格。</p>
+                </div>
+                <div class="card" data-aos="fade-left" data-aos-delay="200">
+                    <h3>ℙ𝕃𝕆𝕋 & 𝕄𝔸ℙ：箱庭式剧情探索</h3>
+                    <p>沉浸于TEOH-3的废墟与秘境，探索过往的故事。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 角色介绍（轮播） -->
+        <section id="characters" class="section characters-section">
+            <div class="section-header">
+                <h2 class="main-title">故事中人</h2>
+                <p class="sub-title">CHARACTERS <span class="arrow">↘</span></p>
+            </div>
+
+            <!-- 角色轮播主区域 -->
+            <div class="character-carousel">
+                <div class="character-display">
+                    <div class="character-avatar" id="charAvatar"></div>
+                    <div class="character-info">
+                        <h3 id="charName">希琳娜</h3>
+                        <p id="charDesc"></p>
+                    </div>
+                </div>
+                <!-- 下方控制区：左右按钮 + 当前名字 -->
+                <div class="character-controls">
+                    <button class="char-arrow left" id="prevChar">⇦</button>
+                    <span class="current-name" id="currentCharName">希琳娜</span>
+                    <button class="char-arrow right" id="nextChar">⇨</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 开发进度（恢复圆角进度条） -->
+        <section id="progress" class="section progress-section">
+            <div class="section-header">
+                <h2 class="main-title">开发进度</h2>
+                <p class="sub-title">PROGRESS <span class="arrow">↘</span></p>
+            </div>
+
+            <div class="progress-list">
+                <div class="progress-item">
+                    <span>全物品自定义基底</span>
+                    <span>80%</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
+                </div>
+                <div class="progress-item">
+                    <span>养成核心运行框架</span>
+                    <span>70%</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width:70%"></div></div>
+                </div>
+                <div class="progress-item">
+                    <span>矿区系统</span>
+                    <span>80%</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
+                </div>
+                <div class="progress-item">
+                    <span>基础经济系统与地区商店</span>
+                    <span>10%</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width:10%"></div></div>
+                </div>
+                <div class="progress-item">
+                    <span>战斗机制</span>
+                    <span>100%</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+                </div>
+                <div class="progress-item">
+                    <span>主线剧情设计</span>
+                    <span>100%</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+                </div>
+                <div class="progress-item">
+                    <span>主线地图搭建</span>
+                    <span>60%</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+                </div>
+                <div class="progress-item">
+                    <span>抽卡系统基础框架</span>
+                    <span>100%</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+                </div>
+                <div class="progress-item">
+                    <span>月卡与周期协议 0%</span>
+                    <span>0%</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                </div>
+                <div class="progress-item">
+                    <span>全物品自定义合成</span>
+                    <span>90%</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width:90%"></div></div>
+                </div>
+                <div class="progress-item">
+                    <span>装备词条精锻</span>
+                    <span>80%</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
+                </div>
+                <div class="progress-item">
+                    <span>副本——异构空间</span>
+                    <span>0%</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                </div>
+                <div class="progress-item">
+                    <span>周本——危境征讨</span>
+                    <span>0%</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                </div>
+                <div class="progress-item">
+                    <span>周期爬塔挑战——蜃境演算</span>
+                    <span>0%</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 社区（交错卡片） -->
+        <section id="community" class="section community-section">
+            <div class="section-header">
+                <h2 class="main-title">加入我们</h2>
+                <p class="sub-title">COMMUNITY <span class="arrow">↘</span></p>
+            </div>
+
+            <div class="community-cards">
+                <div class="card community-card" data-aos="fade-left" data-aos-delay="0">
+                    <h3>𝔼𝕏ℂℍ𝔸ℕ𝔾𝔼：</h3>
+                    <p>主Q群：444197245</p>
+                    <p>内部讨论组：联系服主询问加入要求</p>
+                    <p></p>
+                </div>
+                <div class="card community-card" data-aos="fade-left" data-aos-delay="100">
+                    <h3>💬 Discord</h3>
+                    <p>服务器号<a href="#">74361349</a></p>
+                    <p></p>
+                </div>
+                <div class="card community-card" data-aos="fade-left" data-aos-delay="200">
+                    <h3>𝔹𝕚𝕝𝕚𝔹𝕚𝕝𝕚</h3>
+                    <p>@Moon_月梦_</p>
+                    <p>周更更新开发日常与某些生活日常</p>
+                </div>
+                <div class="card community-card" data-aos="fade-left" data-aos-delay="300">
+                    <h3>📧 反馈邮箱</h3>
+                    <p>502540184@qq.com</p>
+                    <p>任何建议或BUG报告请发送至此</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 公告模块（新增） -->
+        <section id="notice" class="section notice-section">
+            <div class="section-header">
+                <h2 class="main-title">公告</h2>
+                <p class="sub-title">NOTICE <span class="arrow">↘</span></p>
+            </div>
+
+            <!-- 公告详情显示区（初始隐藏） -->
+            <div class="notice-detail" id="noticeDetail">
+                <h3 id="detailTitle"></h3>
+                <p id="detailContent"></p>
+            </div>
+
+            <!-- 公告标题横向滚动列表 -->
+            <div class="notice-list" id="noticeList">
+                <!-- 将通过JS动态生成 -->
+            </div>
+        </section>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <p>© 异想纪元 · 熵寂录 开发团队 | 基于Minecraft BE 构建</p>
+            <p>「以此为启，向着未来」</p>
+        </footer>
+    </main>
+
+    <!-- 背景音乐播放器 -->
+    <div class="music-player">
+        <audio id="bgmAudio" loop>
+            <source src="music/bgm1.mp3" type="audio/mpeg">
+        </audio>
+        <div class="music-controls">
+            <button id="playPauseBtn" class="music-btn">▶</button>
+            <button id="prevTrackBtn" class="music-btn">⏮</button>
+            <button id="nextTrackBtn" class="music-btn">⏭</button>
+            <span id="trackName">bgm1</span>
+        </div>
+    </div>
+
+    <!-- AOS 脚本 -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // ========== 初始化 AOS ==========
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 50
+        });
+
+// ========== 加载视频与固定时长进度条动画 ==========
+const video = document.getElementById('introVideo');
+const loadingVideo = document.getElementById('loadingVideo');
+const skipBtn = document.getElementById('skipBtn');
+
+// 进度条元素
+const leftFill = document.getElementById('progressLeftFill');
+const rightFill = document.getElementById('progressRightFill');
+const percentLeft = document.getElementById('percentLeft');
+const percentRight = document.getElementById('percentRight');
+
+let animationFrame;
+let startTime;
+const ANIMATION_DURATION = 7200; // 8秒
+
+// 动画函数
+function animateProgress(timestamp) {
+    if (!startTime) startTime = timestamp;
+    const elapsed = timestamp - startTime;
+    let progress = Math.min(elapsed / ANIMATION_DURATION, 1); // 0到1
+
+    // 计算百分比
+    const percent = Math.round(progress * 100);
+    const percentStr = percent + '%';
+
+    // 更新左右填充高度（从底部上升）
+    leftFill.style.height = percentStr;
+    rightFill.style.height = percentStr;
+
+    // 更新百分比数字
+    percentLeft.textContent = percentStr;
+    percentRight.textContent = percentStr;
+
+    if (progress < 1) {
+        // 继续动画
+        animationFrame = requestAnimationFrame(animateProgress);
+    } else {
+        // 动画结束，隐藏加载层
+        loadingVideo.classList.add('hide');
+        video.pause(); // 可选：暂停视频
+        cancelAnimationFrame(animationFrame);
+    }
+}
+
+// 开始动画
+if (video) {
+    // 视频加载完成后开始动画（确保视频能播放）
+    video.addEventListener('loadeddata', () => {
+        startTime = null; // 重置开始时间
+        animationFrame = requestAnimationFrame(animateProgress);
+    });
+
+    // 如果视频已经可以播放（缓存），直接开始
+    if (video.readyState >= 2) {
+        startTime = null;
+        animationFrame = requestAnimationFrame(animateProgress);
+    }
+
+    // 跳过按钮
+    skipBtn.addEventListener('click', () => {
+        loadingVideo.classList.add('hide');
+        video.pause();
+        cancelAnimationFrame(animationFrame);
+    });
+
+    // 视频正常结束时（可选：等待动画结束，这里不做额外处理）
+    video.addEventListener('ended', () => {
+        // 如果动画还没结束，可以不处理，由动画自行结束；也可强制结束
+        // 这里选择让动画自然结束（最多等8秒）
+    });
+}
+
+        // ========== 侧边栏控制（移动端） ==========
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const closeBtn = document.getElementById('closeBtn');
+        const overlay = document.getElementById('overlay');
+
+        function openSidebar() {
+            if (window.innerWidth < 768) {
+                sidebar.classList.add('open');
+                overlay.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeSidebar() {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        menuBtn.addEventListener('click', openSidebar);
+        closeBtn.addEventListener('click', closeSidebar);
+        overlay.addEventListener('click', closeSidebar);
+
+        // 点击侧边栏链接平滑滚动并关闭侧边栏
+        document.querySelectorAll('.sidebar-nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+                if (window.innerWidth < 768) {
+                    closeSidebar();
+                }
+            });
+        });
+
+        // ========== 粒子动画 ==========
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function initParticles() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+
+            const particleCount = 80; // 增加粒子数量使其更明显
+            particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    size: Math.random() * 4 + 1,
+                    speedX: (Math.random() - 0.5) * 0.5,
+                    speedY: (Math.random() - 0.5) * 0.5,
+                    color: `rgba(62, 207, 207, ${Math.random() * 0.4})`
+                });
+            }
+        }
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+
+                p.x += p.speedX;
+                p.y += p.speedY;
+
+                if (p.x < 0 || p.x > width) p.speedX *= -1;
+                if (p.y < 0 || p.y > height) p.speedY *= -1;
+            });
+            requestAnimationFrame(drawParticles);
+        }
+
+        window.addEventListener('resize', () => {
+            initParticles();
+        });
+
+        initParticles();
+        drawParticles();
+
+        // ========== 世界观卡片数据 ==========
+        const loreCards = [
+            {
+                title: "异想",
+                desc: "异想是基于“茧”散发的粒子，能够入侵一切和“思想”、“神经”相关的结构，并以该结构本身的趋势，进行熵增型演化，此过程称为“侵蚀”。比如人类的思想被侵蚀后，若该人类不能以极强的意志对抗，则会堕落为行尸，这种情况同样适用于高智力动物，少数植物。"
+            },
+            {
+                title: "侵蚀",
+                desc: "侵蚀分为不同程度，量化单位为“紊乱度”。低紊乱度仅会对人类造成部分外观的演化，这与人类遭受侵蚀时的“思想”相关，基于此，会出现许多诸如“兽耳”、“角”之类的外表特征。中紊乱度在侵蚀理智的情况下，也会变相地提升受侵蚀者的身体能力，使其拥有更强的战斗力，其与“紊乱度”高低、人类意志强弱、侵蚀时长相关联。"
+            },
+            {
+                title: "异想者",
+                desc: "异想可以攫取“概念”，以受侵蚀者的“最强欲望”，使其成为“异想者”。异想者通常拥有单个概念的权能，但概念拥有未知的限制，这使得异想者能力强大，可以摧毁城市甚至大陆。异想者分为“羽化”与“非羽化”：非羽化的异想者会遵从“概念”的混沌面，造成毁灭；“羽化”的异想者可以保持一定理智，且能够为人类而战。是否羽化通常取决于异想者受到侵蚀时对于“概念”的理解和对抗力，这和其“意志”相关。"
+            },
+            {
+                title: "伊西亚斯",
+                desc: "进入夜纪元后，人类最终组成了当下世界上最强大和统一的武装力量，以研究、反抗异想为目标持续努力着。"
+            }
+        ];
+
+        let currentLoreIndex = 0;
+        const loreTitleEl = document.getElementById('loreTitle');
+        const loreDescEl = document.getElementById('loreDesc');
+        const currentLoreTitleSpan = document.getElementById('currentLoreTitle');
+        const loreTextWrapper = document.querySelector('.lore-text');
+
+        function updateLoreCard(index, direction = 'right') {
+            const card = loreCards[index];
+            loreTitleEl.textContent = card.title;
+            loreDescEl.textContent = card.desc;
+            currentLoreTitleSpan.textContent = card.title;
+
+            // 添加飞入动画
+            loreTextWrapper.classList.remove('slide-in-right', 'slide-in-left');
+            if (direction === 'right') {
+                loreTextWrapper.classList.add('slide-in-right');
+            } else {
+                loreTextWrapper.classList.add('slide-in-left');
+            }
+            // 动画结束后移除类（可选）
+            setTimeout(() => {
+                loreTextWrapper.classList.remove('slide-in-right', 'slide-in-left');
+            }, 600);
+        }
+
+        document.getElementById('prevCard').addEventListener('click', () => {
+            const newIndex = (currentLoreIndex - 1 + loreCards.length) % loreCards.length;
+            updateLoreCard(newIndex, 'left');
+            currentLoreIndex = newIndex;
+        });
+
+        document.getElementById('nextCard').addEventListener('click', () => {
+            const newIndex = (currentLoreIndex + 1) % loreCards.length;
+            updateLoreCard(newIndex, 'right');
+            currentLoreIndex = newIndex;
+        });
+
+        // 初始化
+        updateLoreCard(0, 'right');
+
+        // ========== 角色数据（您可自行替换图片和描述） ==========
+        const characters = [
+            {
+                name: "希琳娜.菲尔特",
+                desc: "从实验室苏醒的改造人，背负击溃异想的任务。体内沉睡着『创构』的碎片。故事的起始点",
+                avatar: "images/希琳娜.jpg"
+            },
+            {
+                name: "伊加尔塔.伯纳恩",
+                desc: "021小队队长，亚微尔的义姐。首次出现于第二章P2",
+                avatar: "images/伊加尔塔.jpg"
+            },
+            {
+                name: "亚微尔.伯纳恩",
+                desc: "伊加尔塔的义妹，天真可爱。首次出现于第二章P2",
+                avatar: "images/亚微尔.jpg"
+            },
+            {
+                name: "翊华",
+                desc: "神州武者，世代习武。首次出现于第二章P2",
+                avatar: "images/翊华.jpg"
+            },
+            {
+                name: "方涟",
+                desc: "翊华的挚友。首次出现于第二章P2",
+                avatar: "images/方涟.jpg"
+            },
+            {
+                name: "椛铭.樱",
+                desc: "东陆武者，神社覆灭后加入伊西亚斯。首次出现于第二章P2",
+                avatar: "images/椛铭樱.jpg"
+            }
+        ];
+
+        let currentCharIndex = 0;
+        const charAvatar = document.getElementById('charAvatar');
+        const charName = document.getElementById('charName');
+        const charDesc = document.getElementById('charDesc');
+        const currentCharNameSpan = document.getElementById('currentCharName');
+        const charDisplay = document.querySelector('.character-display');
+
+        function updateCharacter(index, direction = 'right') {
+            const char = characters[index];
+            charName.textContent = char.name;
+            charDesc.textContent = char.desc;
+            charAvatar.style.backgroundImage = `url('${char.avatar}')`;
+            currentCharNameSpan.textContent = char.name;
+
+            // 飞入动画
+            charDisplay.classList.remove('slide-in-right', 'slide-in-left');
+            if (direction === 'right') {
+                charDisplay.classList.add('slide-in-right');
+            } else {
+                charDisplay.classList.add('slide-in-left');
+            }
+            setTimeout(() => {
+                charDisplay.classList.remove('slide-in-right', 'slide-in-left');
+            }, 600);
+        }
+
+        document.getElementById('prevChar').addEventListener('click', () => {
+            const newIndex = (currentCharIndex - 1 + characters.length) % characters.length;
+            updateCharacter(newIndex, 'left');
+            currentCharIndex = newIndex;
+        });
+
+        document.getElementById('nextChar').addEventListener('click', () => {
+            const newIndex = (currentCharIndex + 1) % characters.length;
+            updateCharacter(newIndex, 'right');
+            currentCharIndex = newIndex;
+        });
+
+        updateCharacter(0, 'right');
+
+        // ========== 公告数据 ==========
+        const notices = [
+            { title: "官网正式上线", content: "《异想纪元》官方网站今日正式开放！欢迎各位领航者访问。" },
+            { title: "首测预约开启", content: "首次封闭测试将于5月开启，现在加入QQ群有概率获得测试资格。" },
+            { title: "角色立绘制作", content: "基本形象已定档，正在制作中" },
+            { title: "开发日志v0.49", content: "战斗系统基本完成，正在优化招架手感与bug测试。" }
+        ];
+
+        const noticeListEl = document.getElementById('noticeList');
+        const noticeDetail = document.getElementById('noticeDetail');
+        const detailTitle = document.getElementById('detailTitle');
+        const detailContent = document.getElementById('detailContent');
+
+        // 生成公告标题卡片
+        notices.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'notice-card';
+            card.textContent = item.title;
+            card.dataset.index = index;
+            card.addEventListener('click', () => {
+                detailTitle.textContent = item.title;
+                detailContent.textContent = item.content;
+                noticeDetail.style.display = 'block';
+                // 添加飞入动画
+                noticeDetail.classList.remove('slide-in-right');
+                void noticeDetail.offsetWidth; // 强制重绘
+                noticeDetail.classList.add('slide-in-right');
+            });
+            noticeListEl.appendChild(card);
+        });
+
+        // ========== 背景音乐控制 ==========
+        const bgm = document.getElementById('bgmAudio');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const prevTrackBtn = document.getElementById('prevTrackBtn');
+        const nextTrackBtn = document.getElementById('nextTrackBtn');
+        const trackNameSpan = document.getElementById('trackName');
+
+        const tracks = ['bgm1.mp3', 'bgm2.mp3', 'bgm3.mp3']; // 可替换
+        let currentTrack = 0;
+
+        function loadTrack(index) {
+            bgm.src = `music/${tracks[index]}`;
+            bgm.load();
+            trackNameSpan.textContent = tracks[index].replace('.mp3', '');
+            if (playPauseBtn.textContent === '⏸') {
+                bgm.play();
+            }
+        }
+
+        playPauseBtn.addEventListener('click', () => {
+            if (bgm.paused) {
+                bgm.play();
+                playPauseBtn.textContent = '⏸';
+            } else {
+                bgm.pause();
+                playPauseBtn.textContent = '▶';
+            }
+        });
+
+        prevTrackBtn.addEventListener('click', () => {
+            currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+            loadTrack(currentTrack);
+            if (!bgm.paused) bgm.play();
+        });
+
+        nextTrackBtn.addEventListener('click', () => {
+            currentTrack = (currentTrack + 1) % tracks.length;
+            loadTrack(currentTrack);
+            if (!bgm.paused) bgm.play();
+        });
+
+        loadTrack(0); // 预加载第一首
+
+        // ========== 高亮当前菜单项 ==========
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.section');
+            const navLinks = document.querySelectorAll('.sidebar-nav a');
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 120;
+                if (window.pageYOffset >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
