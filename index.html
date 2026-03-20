@@ -9,12 +9,13 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="page-home">
-    <!-- 加载视频层 -->
-<div id="loadingVideo">
-    <!-- 视频背景 -->
-    <video id="introVideo" autoplay muted playsinline>
-        <source src="video/intro.mp4" type="video/mp4">
-    </video>
+<!-- 加载层（图片版） -->
+<div id="loading">
+    <!-- 背景图片（根据屏幕宽度自动切换） -->
+    <picture>
+        <source srcset="images/loading-mobile.jpg" media="(max-width: 767px)">
+        <img src="images/loading-desktop.jpg" alt="loading" class="loading-image">
+    </picture>
 
     <!-- 左右垂直进度条（带跟随数字） -->
     <div class="progress-left">
