@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 · 异想纪元</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 登录页专用样式，可放在style.css或内联 */
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--accent-cyan);
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+        }
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--accent-cyan);
+        }
+        .tab-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 0.8rem;
+            background: transparent;
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .tab-btn.active {
+            background: var(--accent-cyan);
+            color: black;
+        }
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .form input {
+            padding: 0.8rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--text-dim);
+            color: white;
+        }
+        .form button {
+            padding: 0.8rem;
+            background: var(--accent-cyan);
+            color: black;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .form button:hover {
+            opacity: 0.8;
+        }
+        .code-row {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .code-row input {
+            flex: 1;
+        }
+        .code-row button {
+            width: 120px;
+            background: transparent;
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+        .avatar-upload {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        #avatarPreview {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 50%;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        .back-link {
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--text-dim);
+        }
+        .back-link a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body class="page-home">
+    <!-- 可选背景画布，与首页一致 -->
+    <canvas id="bg-canvas"></canvas>
+
+    <main class="login-container">
+        <h2>异想纪元 · 登录/注册</h2>
+        <div class="tab-buttons">
+            <button class="tab-btn active" id="tabLoginBtn">登录</button>
+            <button class="tab-btn" id="tabRegisterBtn">注册</button>
+        </div>
+
+        <!-- 登录表单 -->
+        <div id="loginForm" class="form">
+            <input type="tel" id="loginPhone" placeholder="手机号" required>
+            <div class="code-row">
+                <input type="text" id="loginCode" placeholder="验证码" required>
+                <button id="sendLoginCode">获取验证码</button>
+            </div>
+            <button id="loginBtn">登录</button>
+        </div>
+
+        <!-- 注册表单（默认隐藏） -->
+        <div id="registerForm" class="form" style="display: none;">
+            <input type="tel" id="regPhone" placeholder="手机号" required>
+            <div class="code-row">
+                <input type="text" id="regCode" placeholder="验证码" required>
+                <button id="sendRegCode">获取验证码</button>
+            </div>
+            <input type="text" id="regGameId" placeholder="游戏内ID" required>
+            <div class="avatar-upload">
+                <label for="regAvatar">上传头像</label>
+                <input type="file" id="regAvatar" accept="image/*">
+                <img id="avatarPreview" src="#" alt="预览">
+            </div>
+            <button id="registerBtn">注册</button>
+        </div>
+
+        <div class="back-link">
+            <a href="index.html">← 返回首页</a>
+        </div>
+    </main>
+
+    <!-- 引入粒子动画（与首页相同） -->
+    <script>
+        // 粒子动画（可从首页复制）
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [];
+        function initParticles() { /* 同首页代码 */ }
+        function drawParticles() { /* 同首页代码 */ }
+        window.addEventListener('resize', initParticles);
+        initParticles();
+        drawParticles();
+
+        // 选项卡切换
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const tabLogin = document.getElementById('tabLoginBtn');
+        const tabRegister = document.getElementById('tabRegisterBtn');
+
+        tabLogin.addEventListener('click', () => {
+            tabLogin.classList.add('active');
+            tabRegister.classList.remove('active');
+            loginForm.style.display = 'flex';
+            registerForm.style.display = 'none';
+        });
+        tabRegister.addEventListener('click', () => {
+            tabRegister.classList.add('active');
+            tabLogin.classList.remove('active');
+            registerForm.style.display = 'flex';
+            loginForm.style.display = 'none';
+        });
+
+        // 模拟发送验证码
+        document.getElementById('sendLoginCode').addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('验证码已发送（模拟）');
+        });
+        document.getElementById('sendRegCode').addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('验证码已发送（模拟）');
+        });
+
+        // 头像预览
+        document.getElementById('regAvatar').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const preview = document.getElementById('avatarPreview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // 登录
+        document.getElementById('loginBtn').addEventListener('click', async () => {
+            const phone = document.getElementById('loginPhone').value;
+            const code = document.getElementById('loginCode').value;
+            if (!phone || !code) {
+                alert('请填写手机号和验证码');
+                return;
+            }
+            try {
+                const response = await fetch('http://127.0.0.1:5000/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    alert('登录成功！');
+                    window.location.href = 'index.html';
+                } else {
+                    alert('登录失败：' + (data.error || '未知错误'));
+                }
+            } catch (err) {
+                alert('网络错误，请稍后重试');
+                console.error(err);
+            }
+        });
+
+        // 注册
+        document.getElementById('registerBtn').addEventListener('click', async () => {
+            const phone = document.getElementById('regPhone').value;
+            const code = document.getElementById('regCode').value;
+            const gameId = document.getElementById('regGameId').value;
+            if (!phone || !code || !gameId) {
+                alert('请填写手机号、验证码和游戏ID');
+                return;
+            }
+            // 头像暂不处理，只传基本信息
+            try {
+                const response = await fetch('http://127.0.0.1:5000/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone, game_id: gameId })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    alert('注册成功！');
+                    window.location.href = 'index.html';
+                } else {
+                    alert('注册失败：' + (data.error || '未知错误'));
+                }
+            } catch (err) {
+                alert('网络错误，请稍后重试');
+                console.error(err);
+            }
+        });
+    </script>
+</body>
+</html>

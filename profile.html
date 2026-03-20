@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人信息 · 异想纪元</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .profile-container {
+            max-width: 500px;
+            margin: 100px auto;
+            padding: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--accent-cyan);
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            text-align: center;
+        }
+        .avatar-large {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            background-size: cover;
+            background-position: center;
+            border: 3px solid var(--accent-purple);
+        }
+        .info-item {
+            margin: 1rem 0;
+            padding: 0.5rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--text-dim);
+        }
+        .info-item label {
+            display: inline-block;
+            width: 80px;
+            color: var(--accent-cyan);
+        }
+        .info-item span {
+            color: var(--text-light);
+        }
+        .btn-logout {
+            margin-top: 2rem;
+            padding: 0.8rem 2rem;
+            background: var(--accent-red);
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .back-link {
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body class="page-home">
+    <canvas id="bg-canvas"></canvas>
+
+    <main class="profile-container">
+        <h2>个人信息</h2>
+        <div class="avatar-large" id="profileAvatar"></div>
+        <div class="info-item">
+            <label>手机号：</label>
+            <span id="profilePhone"></span>
+        </div>
+        <div class="info-item">
+            <label>游戏ID：</label>
+            <span id="profileGameId"></span>
+        </div>
+        <div class="info-item">
+            <label>注册时间：</label>
+            <span id="profileCreated"></span>
+        </div>
+        <button class="btn-logout" id="logoutBtn">退出登录</button>
+        <div class="back-link">
+            <a href="index.html">← 返回首页</a>
+        </div>
+    </main>
+
+    <script>
+        // 粒子动画（从首页复制）
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [];
+        function initParticles() { /* 同首页代码 */ }
+        function drawParticles() { /* 同首页代码 */ }
+        window.addEventListener('resize', initParticles);
+        initParticles();
+        drawParticles();
+
+        // 加载用户信息
+        const token = localStorage.getItem('token');
+        const userStr = localStorage.getItem('user');
+
+        if (!token || !userStr) {
+            // 未登录，跳转到登录页
+            window.location.href = 'login.html';
+        } else {
+            try {
+                const user = JSON.parse(userStr);
+                document.getElementById('profilePhone').textContent = user.phone;
+                document.getElementById('profileGameId').textContent = user.game_id || '未设置';
+                document.getElementById('profileCreated').textContent = user.created_at ? new Date(user.created_at).toLocaleString() : '未知';
+                if (user.avatar) {
+                    document.getElementById('profileAvatar').style.backgroundImage = `url('${user.avatar}')`;
+                } else {
+                    document.getElementById('profileAvatar').style.backgroundImage = 'url("images/default-avatar.png")';
+                }
+            } catch (e) {
+                console.error(e);
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = 'login.html';
+            }
+        }
+
+        // 退出登录
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
