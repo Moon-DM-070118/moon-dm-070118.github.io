@@ -4,120 +4,195 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>个人信息 · 异想纪元</title>
-    <link rel="stylesheet" href="style.css">
     <style>
-        .profile-container {
-            max-width: 500px;
-            margin: 100px auto;
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0a0c0f, #151a1f);
+            color: #e0e4e8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1rem;
+        }
+        .card {
+            background: rgba(21, 26, 31, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid #3ecfcf;
             padding: 2rem;
-            background: var(--bg-card);
-            border: 1px solid var(--accent-cyan);
-            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+        }
+        h2 {
+            color: #3ecfcf;
+            margin-bottom: 1.5rem;
             text-align: center;
         }
-        .avatar-large {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            margin: 0 auto 1rem;
-            background-size: cover;
-            background-position: center;
-            border: 3px solid var(--accent-purple);
+        .info-row {
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #2a2f35;
+            padding-bottom: 0.5rem;
         }
-        .info-item {
-            margin: 1rem 0;
-            padding: 0.5rem;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--text-dim);
+        .label {
+            font-weight: bold;
+            color: #a0a8b0;
         }
-        .info-item label {
-            display: inline-block;
-            width: 80px;
-            color: var(--accent-cyan);
+        .value {
+            word-break: break-all;
         }
-        .info-item span {
-            color: var(--text-light);
-        }
-        .btn-logout {
-            margin-top: 2rem;
-            padding: 0.8rem 2rem;
-            background: var(--accent-red);
+        input {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid #a0a8b0;
             color: white;
-            border: none;
-            cursor: pointer;
+            padding: 0.4rem;
+            width: 60%;
         }
-        .back-link {
+        button {
+            background: transparent;
+            border: 1px solid #3ecfcf;
+            color: #3ecfcf;
+            padding: 0.4rem 1rem;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+        button.primary {
+            background: #3ecfcf;
+            color: #0a0c0f;
+        }
+        .message {
             margin-top: 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #ff4d6d;
+        }
+        .logout {
+            margin-top: 2rem;
+            text-align: center;
+            border-top: 1px solid #2a2f35;
+            padding-top: 1rem;
+        }
+        a {
+            color: #9b4dff;
+            text-decoration: none;
         }
     </style>
 </head>
-<body class="page-home">
-    <canvas id="bg-canvas"></canvas>
-
-    <main class="profile-container">
+<body>
+    <div class="card">
         <h2>个人信息</h2>
-        <div class="avatar-large" id="profileAvatar"></div>
-        <div class="info-item">
-            <label>手机号：</label>
-            <span id="profilePhone"></span>
+        <div class="info-row">
+            <span class="label">用户名：</span>
+            <span class="value" id="username"></span>
         </div>
-        <div class="info-item">
-            <label>游戏ID：</label>
-            <span id="profileGameId"></span>
+        <div class="info-row">
+            <span class="label">游戏ID：</span>
+            <span class="value" id="gameIdDisplay"></span>
+            <input type="text" id="gameIdEdit" style="display:none;">
+            <button id="editGameIdBtn">修改</button>
+            <button id="saveGameIdBtn" style="display:none;">保存</button>
         </div>
-        <div class="info-item">
-            <label>注册时间：</label>
-            <span id="profileCreated"></span>
+        <div class="message" id="msg"></div>
+        <div class="logout">
+            <button id="logoutBtn">退出登录</button>
+            <br><br>
+            <a href="index.html">← 返回官网首页</a>
         </div>
-        <button class="btn-logout" id="logoutBtn">退出登录</button>
-        <div class="back-link">
-            <a href="index.html">← 返回首页</a>
-        </div>
-    </main>
+    </div>
 
     <script>
-        // 粒子动画（从首页复制）
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        let width, height, particles = [];
-        function initParticles() { /* 同首页代码 */ }
-        function drawParticles() { /* 同首页代码 */ }
-        window.addEventListener('resize', initParticles);
-        initParticles();
-        drawParticles();
-
-        // 加载用户信息
+        const API_BASE = 'http://127.0.0.1:5000';
         const token = localStorage.getItem('token');
-        const userStr = localStorage.getItem('user');
 
-        if (!token || !userStr) {
-            // 未登录，跳转到登录页
+        if (!token) {
+            alert('请先登录');
             window.location.href = 'login.html';
-        } else {
+        }
+
+        let currentUser = null;
+
+        // 获取用户信息
+        async function loadUserInfo() {
             try {
-                const user = JSON.parse(userStr);
-                document.getElementById('profilePhone').textContent = user.phone;
-                document.getElementById('profileGameId').textContent = user.game_id || '未设置';
-                document.getElementById('profileCreated').textContent = user.created_at ? new Date(user.created_at).toLocaleString() : '未知';
-                if (user.avatar) {
-                    document.getElementById('profileAvatar').style.backgroundImage = `url('${user.avatar}')`;
+                const res = await fetch(`${API_BASE}/api/auth/me`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    currentUser = await res.json();
+                    document.getElementById('username').textContent = currentUser.username;
+                    document.getElementById('gameIdDisplay').textContent = currentUser.game_id || '未设置';
                 } else {
-                    document.getElementById('profileAvatar').style.backgroundImage = 'url("images/default-avatar.png")';
+                    throw new Error('获取信息失败');
                 }
-            } catch (e) {
-                console.error(e);
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
-                window.location.href = 'login.html';
+            } catch (err) {
+                document.getElementById('msg').textContent = '获取用户信息失败，请重新登录';
+                setTimeout(() => {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.href = 'login.html';
+                }, 2000);
             }
         }
+
+        // 修改游戏ID
+        const editBtn = document.getElementById('editGameIdBtn');
+        const saveBtn = document.getElementById('saveGameIdBtn');
+        const gameIdDisplay = document.getElementById('gameIdDisplay');
+        const gameIdEdit = document.getElementById('gameIdEdit');
+
+        editBtn.addEventListener('click', () => {
+            gameIdDisplay.style.display = 'none';
+            gameIdEdit.style.display = 'inline-block';
+            gameIdEdit.value = currentUser.game_id || '';
+            editBtn.style.display = 'none';
+            saveBtn.style.display = 'inline-block';
+        });
+
+        saveBtn.addEventListener('click', async () => {
+            const newGameId = gameIdEdit.value.trim();
+            if (!newGameId) {
+                document.getElementById('msg').textContent = '游戏ID不能为空';
+                return;
+            }
+            try {
+                const res = await fetch(`${API_BASE}/api/user/game_id`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ game_id: newGameId })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    currentUser.game_id = newGameId;
+                    gameIdDisplay.textContent = newGameId;
+                    document.getElementById('msg').textContent = '修改成功';
+                } else {
+                    document.getElementById('msg').textContent = data.error || '修改失败';
+                }
+            } catch (err) {
+                document.getElementById('msg').textContent = '网络错误';
+            }
+            // 恢复显示
+            gameIdDisplay.style.display = 'inline-block';
+            gameIdEdit.style.display = 'none';
+            editBtn.style.display = 'inline-block';
+            saveBtn.style.display = 'none';
+        });
 
         // 退出登录
         document.getElementById('logoutBtn').addEventListener('click', () => {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
-            window.location.href = 'index.html';
+            window.location.href = 'login.html';
         });
+
+        loadUserInfo();
     </script>
 </body>
 </html>
