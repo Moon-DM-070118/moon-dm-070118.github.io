@@ -724,6 +724,41 @@ if (video) {
                 }
             });
         });
+        // ========== 侧边栏按钮跳转 ==========
+document.getElementById('btnShop').addEventListener('click', () => {
+    window.location.href = 'shop.html'; // 可替换为实际商店页面
+});
+
+document.getElementById('btnBili').addEventListener('click', () => {
+    window.open('https://space.bilibili.com/559186194', '_blank');
+});
+
+document.getElementById('btnTicket').addEventListener('click', () => {
+    window.location.href = 'ticket.html'; // 可替换为实际工单页面
+});
+
+// ========== 登录状态控制用户按钮 ==========
+const userBtn = document.getElementById('btnUser');
+const userBtnText = document.getElementById('userBtnText');
+
+function updateUserButton() {
+    const token = localStorage.getItem('token');
+    if (token) {
+        userBtnText.textContent = '个人信息';
+    } else {
+        userBtnText.textContent = '登录/注册';
+    }
+}
+updateUserButton();
+
+userBtn.addEventListener('click', () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        window.location.href = 'profile.html';
+    } else {
+        window.location.href = 'login.html';
+    }
+});
     </script>
 </body>
 </html>
