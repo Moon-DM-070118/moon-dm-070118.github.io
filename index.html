@@ -342,7 +342,6 @@
 const loading = document.getElementById('loading');
 const skipBtn = document.getElementById('skipBtn');
 
-// 进度条元素
 const leftFill = document.getElementById('progressLeftFill');
 const rightFill = document.getElementById('progressRightFill');
 const percentLeft = document.getElementById('percentLeft');
@@ -355,7 +354,7 @@ const ANIMATION_DURATION = 7200; // 7.2秒
 function animateProgress(timestamp) {
     if (!startTime) startTime = timestamp;
     const elapsed = timestamp - startTime;
-    let progress = Math.min(elapsed / ANIMATION_DURATION, 1); // 0到1
+    let progress = Math.min(elapsed / ANIMATION_DURATION, 1);
 
     const percent = Math.round(progress * 100);
     const percentStr = percent + '%';
@@ -373,18 +372,16 @@ function animateProgress(timestamp) {
     }
 }
 
-// 页面加载完成后立即开始动画
-window.addEventListener('load', () => {
-    startTime = null;
-    animationFrame = requestAnimationFrame(animateProgress);
-});
+// 立即启动动画（不再等待 load 事件）
+startTime = null;
+animationFrame = requestAnimationFrame(animateProgress);
 
 // 跳过按钮
 skipBtn.addEventListener('click', () => {
     loading.classList.add('hide');
     cancelAnimationFrame(animationFrame);
 });
-
+        
         // ========== 侧边栏控制（移动端） ==========
         const menuBtn = document.getElementById('menuBtn');
         const sidebar = document.getElementById('sidebar');
