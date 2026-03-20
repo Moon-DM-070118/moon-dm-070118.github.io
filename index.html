@@ -338,9 +338,8 @@
             offset: 50
         });
 
-// ========== 加载视频与固定时长进度条动画 ==========
-const video = document.getElementById('introVideo');
-const loadingVideo = document.getElementById('loadingVideo');
+// ========== 固定时长进度条动画（图片版） ==========
+const loading = document.getElementById('loading');
 const skipBtn = document.getElementById('skipBtn');
 
 // 进度条元素
@@ -351,64 +350,40 @@ const percentRight = document.getElementById('percentRight');
 
 let animationFrame;
 let startTime;
-const ANIMATION_DURATION = 7200; // 8秒
+const ANIMATION_DURATION = 7200; // 7.2秒
 
-// 动画函数
 function animateProgress(timestamp) {
     if (!startTime) startTime = timestamp;
     const elapsed = timestamp - startTime;
     let progress = Math.min(elapsed / ANIMATION_DURATION, 1); // 0到1
 
-    // 计算百分比
     const percent = Math.round(progress * 100);
     const percentStr = percent + '%';
 
-    // 更新左右填充高度（从底部上升）
     leftFill.style.height = percentStr;
     rightFill.style.height = percentStr;
-
-    // 更新百分比数字
     percentLeft.textContent = percentStr;
     percentRight.textContent = percentStr;
 
     if (progress < 1) {
-        // 继续动画
         animationFrame = requestAnimationFrame(animateProgress);
     } else {
-        // 动画结束，隐藏加载层
-        loadingVideo.classList.add('hide');
-        video.pause(); // 可选：暂停视频
+        loading.classList.add('hide');
         cancelAnimationFrame(animationFrame);
     }
 }
 
-// 开始动画
-if (video) {
-    // 视频加载完成后开始动画（确保视频能播放）
-    video.addEventListener('loadeddata', () => {
-        startTime = null; // 重置开始时间
-        animationFrame = requestAnimationFrame(animateProgress);
-    });
+// 页面加载完成后立即开始动画
+window.addEventListener('load', () => {
+    startTime = null;
+    animationFrame = requestAnimationFrame(animateProgress);
+});
 
-    // 如果视频已经可以播放（缓存），直接开始
-    if (video.readyState >= 2) {
-        startTime = null;
-        animationFrame = requestAnimationFrame(animateProgress);
-    }
-
-    // 跳过按钮
-    skipBtn.addEventListener('click', () => {
-        loadingVideo.classList.add('hide');
-        video.pause();
-        cancelAnimationFrame(animationFrame);
-    });
-
-    // 视频正常结束时（可选：等待动画结束，这里不做额外处理）
-    video.addEventListener('ended', () => {
-        // 如果动画还没结束，可以不处理，由动画自行结束；也可强制结束
-        // 这里选择让动画自然结束（最多等8秒）
-    });
-}
+// 跳过按钮
+skipBtn.addEventListener('click', () => {
+    loading.classList.add('hide');
+    cancelAnimationFrame(animationFrame);
+});
 
         // ========== 侧边栏控制（移动端） ==========
         const menuBtn = document.getElementById('menuBtn');
